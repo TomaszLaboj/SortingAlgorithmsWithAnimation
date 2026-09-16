@@ -8,7 +8,11 @@ import java.util.Random;
 public class BubbleSortWithAnimation extends Frame implements Runnable {
     static int[] heights;
     int checkedIndex;
+    boolean sorted = false;
+    Color darkGreen = new Color(Integer.parseInt("2B9348", 16));
     Thread t1;
+    Image offscreenImage;
+    Graphics offscreenGraphics;
 
     public BubbleSortWithAnimation() {
         t1 = new Thread(this);
@@ -20,8 +24,22 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
             }
         });
     }
-
     public void paint(Graphics g) {
+        if (offscreenImage == null || offscreenImage.getWidth(null) != getWidth()
+                || offscreenImage.getHeight(null) != getHeight()) {
+            offscreenImage = createImage(getWidth(), getHeight());
+
+            offscreenGraphics = offscreenImage.getGraphics();
+        }
+        offscreenGraphics.setColor(getBackground());
+        offscreenGraphics.fillRect(0, 0, getWidth(), getHeight());
+        drawGraph(offscreenGraphics);
+
+        g.drawImage(offscreenImage, 0, 0, this);
+    }
+
+
+    public void drawGraph(Graphics g) {
         int gap = 1;
         int width = 14;
         int x = 20;
@@ -29,16 +47,21 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
         int index = 0;
         for(int height : heights) {
             if (index == checkedIndex) {
-                g.setColor(Color.green);
-                g.fillRect(x, bottom - height, width, height);
+                g.setColor(Color.RED);
+            } else if (sorted) {
+                g.setColor(darkGreen);
             } else {
                 g.setColor(Color.black);
-                g.fillRect(x, bottom - height, width, height);
-
             }
+            g.fillRect(x, bottom - height, width, height);
             x += width + gap;
             index++;
         }
+    }
+
+    @Override
+    public void update(Graphics g) {
+        paint(g);
     }
 
     @Override
@@ -57,11 +80,12 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
         BubbleSortWithAnimation appwin = new BubbleSortWithAnimation();
 
         appwin.setSize(new Dimension(1600, 600));
-        appwin.setTitle("Drawing Chart");
+        appwin.setTitle("Bubble Sort");
         appwin.setVisible(true);
     }
 
     void bubbleSort(int[] nums) throws InterruptedException {
+        sorted = false;
         int lastIndex = nums.length - 1;
 
         while(lastIndex >= 1) {
@@ -77,6 +101,7 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
             }
             lastIndex--;
         }
+        sorted = true;
     }
 }
 
