@@ -1,5 +1,7 @@
 package sorting;
 
+import sorting.utils.ShuffledNumbers;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
