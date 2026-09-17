@@ -7,8 +7,11 @@ import java.awt.event.WindowEvent;
 public class MergeSortWithAnimation extends BubbleSortWithAnimation {
     static int[] heights;
     int checkedIndex;
-    Thread t1;
     boolean sorted = false;
+    Color darkGreen = new Color(Integer.parseInt("2B9348", 16));
+    Thread t1;
+    Image offscreenImage;
+    Graphics offscreenGraphics;
 
     public MergeSortWithAnimation() {
         t1 = new Thread(this);
@@ -22,27 +25,43 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
     }
 
     public void paint(Graphics g) {
+        if (offscreenImage == null || offscreenImage.getWidth(null) != getWidth()
+                || offscreenImage.getHeight(null) != getHeight()) {
+            offscreenImage = createImage(getWidth(), getHeight());
+
+            offscreenGraphics = offscreenImage.getGraphics();
+        }
+        offscreenGraphics.setColor(getBackground());
+        offscreenGraphics.fillRect(0, 0, getWidth(), getHeight());
+        drawGraph(offscreenGraphics);
+
+        g.drawImage(offscreenImage, 0, 0, this);
+    }
+
+
+    public void drawGraph(Graphics g) {
         int gap = 1;
         int width = 14;
         int x = 20;
         int bottom = 500;
         int index = 0;
         for(int height : heights) {
-            if (sorted) {
-                g.setColor(Color.getHSBColor(0.33f, 1.0f, 0.39f));
-                g.fillRect(x, bottom - height, width, height);
-            } else if (index == checkedIndex) {
-                g.setColor(Color.red);
-                g.fillRect(x, bottom - height, width, height);
+            if (index == checkedIndex) {
+                g.setColor(Color.RED);
+            } else if (sorted) {
+                g.setColor(darkGreen);
             } else {
                 g.setColor(Color.black);
-                g.fillRect(x, bottom - height, width, height);
             }
+            g.fillRect(x, bottom - height, width, height);
             x += width + gap;
             index++;
         }
     }
-
+    @Override
+    public void update(Graphics g) {
+        paint(g);
+    }
     @Override
     public void run() {
         try {
