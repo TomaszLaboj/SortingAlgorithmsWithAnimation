@@ -1,9 +1,10 @@
 package sorting;
 
+import sorting.utils.ShuffledNumbers;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Random;
 
 public class BubbleSortWithAnimation extends Frame implements Runnable {
     static int[] heights;
