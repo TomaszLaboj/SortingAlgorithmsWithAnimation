@@ -1,7 +1,7 @@
 package sorting.sortingAlgorithms;
 
 public class InsertionSort {
-    static void insertionSort(int[] nums) {
+    static int[] insertionSort(int[] nums) {
 
         for(int i = 0; i < nums.length; i++) {
 
@@ -14,5 +14,6 @@ public class InsertionSort {
 
             }
         }
+        return nums;
     };
 }

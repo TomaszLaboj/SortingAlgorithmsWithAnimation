@@ -2,7 +2,7 @@ package sorting.sortingAlgorithms;
 
 public class SelectionSort {
 
-   static void selectionSort(int[] nums) {
+   static int[] selectionSort(int[] nums) {
        int minIndex;
 
        for (int i = 0; i < nums.length; i++) {
@@ -17,6 +17,7 @@ public class SelectionSort {
            nums[i] = nums[minIndex];
            nums[minIndex] = temp;
        }
+       return nums;
    };
 
 

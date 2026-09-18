@@ -1,7 +1,7 @@
 package sorting.sortingAlgorithms;
 
 public class MergeSort {
-    void mergeSort(int[] nums) {
+    static void mergeSort(int[] nums) {
         if (nums.length < 2) {
             return;
         }
