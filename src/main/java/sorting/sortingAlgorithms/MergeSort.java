@@ -23,7 +23,7 @@ public class MergeSort {
         mergeSort(right);
 
         merge(left, right, nums);
-    };
+    }
 
 
     static void merge(int[] left, int[] right, int[] original) {

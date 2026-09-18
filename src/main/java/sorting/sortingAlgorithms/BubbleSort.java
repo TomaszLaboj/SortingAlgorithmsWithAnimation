@@ -1,7 +1,5 @@
 package sorting.sortingAlgorithms;
 
-import java.util.Arrays;
-
 public class BubbleSort {
     static int[] bubbleSort(int[] nums) {
         int lastIndex = nums.length - 1;

@@ -18,7 +18,7 @@ public class SelectionSort {
            nums[minIndex] = temp;
        }
        return nums;
-   };
+   }
 
 
 

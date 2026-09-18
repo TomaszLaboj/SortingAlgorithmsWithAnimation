@@ -111,7 +111,7 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
         mergeSort(right);
 
         merge(left, right, nums);
-    };
+    }
 
 
     void merge(int[] left, int[] right, int[] original) throws InterruptedException {
