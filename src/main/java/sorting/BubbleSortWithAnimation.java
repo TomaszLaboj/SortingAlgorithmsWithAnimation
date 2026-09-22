@@ -8,12 +8,14 @@ import java.awt.event.WindowEvent;
 
 public class BubbleSortWithAnimation extends Frame implements Runnable {
     static int[] heights;
+    static int size;
     int checkedIndex;
     boolean sorted = false;
     Color darkGreen = new Color(Integer.parseInt("2B9348", 16));
     Thread t1;
     Image offscreenImage;
     Graphics offscreenGraphics;
+    int swaps = 0;
 
     public BubbleSortWithAnimation() {
         t1 = new Thread(this);
@@ -37,10 +39,12 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
         drawGraph(offscreenGraphics);
 
         g.drawImage(offscreenImage, 0, 0, this);
+
     }
 
 
     public void drawGraph(Graphics g) {
+        g.setFont(new Font("Mono", Font.BOLD, 32));
         int gap = 1;
         int width = 14;
         int x = 20;
@@ -57,7 +61,17 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
             g.fillRect(x, bottom - height, width, height);
             x += width + gap;
             index++;
+            displayStats(g);
         }
+    }
+
+    public void displayStats(Graphics g) {
+        g.setColor(Color.black);
+        g.setFont(new Font("Mono", Font.BOLD, 32));
+        g.drawString("Bubble Sort", 150, 110);
+        g.setFont(new Font("Mono", Font.BOLD, 24));
+        g.drawString("Array size: " + size, 150, 150);
+        g.drawString("Swaps: " + swaps, 150, 190);
     }
 
     @Override
@@ -78,6 +92,7 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
         ShuffledNumbers shuffledNumbers = new ShuffledNumbers(100);
 
         heights = shuffledNumbers.getShuffledList().stream().mapToInt(Integer::intValue).toArray();
+        size = heights.length;
         BubbleSortWithAnimation appwin = new BubbleSortWithAnimation();
 
         appwin.setSize(new Dimension(1600, 600));
@@ -87,6 +102,7 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
 
     void bubbleSort(int[] nums) throws InterruptedException {
         sorted = false;
+        swaps = 0;
         int lastIndex = nums.length - 1;
 
         while(lastIndex >= 1) {
@@ -96,6 +112,7 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
                     int temp = nums[i + 1];
                     nums[i + 1] = nums[i];
                     nums[i] = temp;
+                    swaps++;
                 }
                 Thread.sleep(5);
                 repaint();
