@@ -7,15 +7,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MergeSortWithAnimation extends BubbleSortWithAnimation {
-    static int[] heights;
-    int checkedIndex;
-    boolean sorted = false;
+    boolean splitting = false;
+    boolean merging = false;
     Color darkGreen = new Color(Integer.parseInt("2B9348", 16));
     Thread t1;
     Image offscreenImage;
     Graphics offscreenGraphics;
 
-    public MergeSortWithAnimation() {
+    public MergeSortWithAnimation(String name) {
+        super(name);
         t1 = new Thread(this);
         t1.start();
         addWindowListener(new WindowAdapter() {
@@ -58,12 +58,21 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
             g.fillRect(x, bottom - height, width, height);
             x += width + gap;
             index++;
+            displayStats(g);
+            showSplitMerge(g);
         }
+
     }
+    public void showSplitMerge(Graphics g) {
+        g.drawString(splitting ? "Splitting" : merging ? "Merging" : "", 150, 230);
+    }
+
+
     @Override
     public void update(Graphics g) {
         paint(g);
     }
+
     @Override
     public void run() {
         try {
@@ -76,8 +85,9 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
     public static void main(String[] args) {
         ShuffledNumbers shuffledNumbers = new ShuffledNumbers(100);
         heights = shuffledNumbers.shuffledList.stream().mapToInt(Integer::intValue).toArray();
+        size = heights.length;
 
-        MergeSortWithAnimation appwin = new MergeSortWithAnimation();
+        MergeSortWithAnimation appwin = new MergeSortWithAnimation("Merge Sort");
         appwin.setSize(new Dimension(1600, 600));
         appwin.setTitle("Merge Sort with animation");
         appwin.setVisible(true);
@@ -87,6 +97,8 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
         if (nums.length < 2) {
             return;
         }
+        splitting = true;
+        merging = false;
         int length = nums.length;
         int midIndex = length / 2;
         int[] left = new int[midIndex];
@@ -115,6 +127,8 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
 
 
     void merge(int[] left, int[] right, int[] original) throws InterruptedException {
+        splitting = false;
+        merging = true;
         int totalLength = left.length + right.length;
         int leftIndex = 0;
         int rightIndex = 0;
@@ -123,9 +137,11 @@ public class MergeSortWithAnimation extends BubbleSortWithAnimation {
             if (rightIndex >= right.length || (leftIndex < left.length && left[leftIndex] <= right[rightIndex])) {
                 original[i] = left[leftIndex];
                 leftIndex++;
+                swaps++;
             } else {
                 original[i] = right[rightIndex];
                 rightIndex++;
+                swaps++;
             }
             repaint();
             Thread.sleep(5);

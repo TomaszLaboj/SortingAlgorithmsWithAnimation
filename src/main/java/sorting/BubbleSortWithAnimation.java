@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class BubbleSortWithAnimation extends Frame implements Runnable {
+    String name;
     static int[] heights;
     static int size;
     int checkedIndex;
@@ -17,7 +18,8 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
     Graphics offscreenGraphics;
     int swaps = 0;
 
-    public BubbleSortWithAnimation() {
+    public BubbleSortWithAnimation(String name) {
+        this.name = name;
         t1 = new Thread(this);
         t1.start();
         addWindowListener(new WindowAdapter() {
@@ -67,9 +69,8 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
 
     public void displayStats(Graphics g) {
         g.setColor(Color.black);
-        g.setFont(new Font("Mono", Font.BOLD, 32));
-        g.drawString("Bubble Sort", 150, 110);
-        g.setFont(new Font("Mono", Font.BOLD, 24));
+        g.setFont(new Font("Nimbus Mono PS", Font.BOLD, 32));
+        g.drawString(name, 150, 110);
         g.drawString("Array size: " + size, 150, 150);
         g.drawString("Swaps: " + swaps, 150, 190);
     }
@@ -93,7 +94,7 @@ public class BubbleSortWithAnimation extends Frame implements Runnable {
 
         heights = shuffledNumbers.getShuffledList().stream().mapToInt(Integer::intValue).toArray();
         size = heights.length;
-        BubbleSortWithAnimation appwin = new BubbleSortWithAnimation();
+        BubbleSortWithAnimation appwin = new BubbleSortWithAnimation("Bubble Sort");
 
         appwin.setSize(new Dimension(1600, 600));
         appwin.setTitle("Bubble Sort");
